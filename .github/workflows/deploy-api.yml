@@ -1,6 +1,7 @@
 on:
   push:
-    branches: [ dev ]
+    branches: 
+      - dev
 name: Azure BICEP
 permissions:
   id-token: write
