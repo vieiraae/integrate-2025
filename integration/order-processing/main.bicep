@@ -11,7 +11,7 @@ param storagePrefix string
   'Premium_ZRS'
   'Standard_GZRS'
   'Standard_RAGZRS'
-])
+]) 
 param storageSKU string = 'Standard_LRS'
 
 param location string = resourceGroup().location
