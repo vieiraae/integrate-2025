@@ -22,7 +22,7 @@
     "tags": [
         {
             "name": "orders",
-            "description": "Order management operations including creating orders and checking their status"
+            "description": "Order management operations including creating orders and checking their status."
         },
         {
             "name": "items",
