@@ -24,7 +24,7 @@ resource stg 'Microsoft.Storage/storageAccounts@2023-04-01' = {
   sku: {
     name: storageSKU
   }
-  kind: 'StorageV2'
+  kind: 'StorageV2' 
   properties: {
     supportsHttpsTrafficOnly: true
   }
