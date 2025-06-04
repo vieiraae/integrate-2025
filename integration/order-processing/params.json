@@ -2,11 +2,20 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "storagePrefix": {
-            "value": "mystore"
+        "apiName": {
+            "value": "order-processing-api"
         },
-        "storageSKU": {
-            "value": "Standard_LRS"
+        "apiDisplayName": {
+            "value": "Order Processing API"
+        },
+        "apiDescription": {
+            "value": "The Order Processing API streamlines and automates the management of customer orders, offering seamless integration for order creation, tracking, status updates, and fulfillment. It ensures efficient, secure, and real-time processing to enhance operational accuracy and customer satisfaction."
+        },
+        "apiRevision": {
+            "value": "1"
+        },
+        "apiPath": {
+            "value": "order-processing"
         }
     }
 }
