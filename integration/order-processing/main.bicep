@@ -2,6 +2,7 @@ param apiName string
 param apiDisplayName string
 param apiRevision string
 param apiPath string
+param apiSummary string
 param apiDescription string
 
 resource apim 'Microsoft.ApiManagement/service@2024-06-01-preview' existing = {
@@ -98,7 +99,7 @@ resource apicAPI 'Microsoft.ApiCenter/services/workspaces/apis@2024-06-01-previe
   name: apiName
   properties: {
     title: apiDisplayName
-    summary: apiDescription
+    summary: apiSummary
     description: apiDescription
     kind: 'REST'
     termsOfService: {

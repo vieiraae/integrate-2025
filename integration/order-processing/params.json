@@ -8,6 +8,9 @@
         "apiDisplayName": {
             "value": "Order Processing API"
         },
+        "apiSummary": {
+            "value": "The Order Processing API handles order creation, tracking, status updates, and fulfillment."
+        },
         "apiDescription": {
             "value": "The Order Processing API streamlines and automates the management of customer orders, offering seamless integration for order creation, tracking, status updates, and fulfillment. It ensures efficient, secure, and real-time processing to enhance operational accuracy and customer satisfaction."
         },
