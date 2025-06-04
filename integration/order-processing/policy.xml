@@ -8,6 +8,12 @@
     <!-- Throttle, authorize, validate, cache, or transform the requests -->
     <inbound>
         <base />
+        <mock-response status-code="200" content-type="application/json">
+            {
+                "message": "This is a mocked response.",
+                "success": true
+            }
+        </mock-response>
     </inbound>
     <!-- Control if and how the requests are forwarded to services  -->
     <backend>
