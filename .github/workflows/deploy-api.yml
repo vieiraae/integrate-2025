@@ -2,7 +2,7 @@ on:
   push:
     branches: 
       - main
-name: Azure BICEP
+name: Azure APIM
 permissions:
   id-token: write
   contents: read
@@ -26,7 +26,6 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        scope: resourceGroup
         resourceGroupName: 'integrate-2025'
         template: integration/order-processing/main.bicep
         parameters: integration/order-processing/params.json
