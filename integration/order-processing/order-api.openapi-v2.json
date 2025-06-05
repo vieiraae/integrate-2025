@@ -1,0 +1,458 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Order Processing API",
+        "version": "1.0.0",
+        "description": "A comprehensive API for managing orders, including order creation, status tracking, and inventory management. This API enables seamless order processing, real-time status updates, and order history management..",
+        "contact": {
+            "name": "Order API Support",
+            "url": "https://api.contoso.com/order-support",
+            "email": "order-api-support@contoso.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://integrate-2025-apim.azure-api.net/order-processing"
+        }
+    ],
+    "tags": [
+        {
+            "name": "orders",
+            "description": "Order management operations including creating orders and checking their status."
+        },
+        {
+            "name": "items",
+            "description": "Operations for managing order items and inventory"
+        }
+    ],
+    "paths": {
+        "/orders": {
+            "post": {
+                "tags": ["orders"],
+                "summary": "Create new order",
+                "description": "Creates a new order with the specified items, quantities, and customer details.",
+                "operationId": "createOrder",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OrderRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Order created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["orders"],
+                "summary": "List orders",
+                "description": "Retrieves a list of orders with optional filtering by date range and status.",
+                "operationId": "listOrders",
+                "parameters": [
+                    {
+                        "name": "startDate",
+                        "in": "query",
+                        "required": false,
+                        "description": "Start date for filtering orders (format: YYYY-MM-DD)",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "query",
+                        "required": false,
+                        "description": "End date for filtering orders (format: YYYY-MM-DD)",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": false,
+                        "description": "Filter orders by status",
+                        "schema": {
+                            "type": "string",
+                            "enum": ["pending", "processing", "shipped", "delivered", "cancelled"]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of orders retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OrderResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{orderId}": {
+            "get": {
+                "tags": ["orders"],
+                "summary": "Get order details",
+                "description": "Retrieves detailed information about a specific order using its ID.",
+                "operationId": "getOrder",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true,
+                        "description": "Unique identifier of the order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order details retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },            "patch": {
+                "tags": ["orders"],
+                "summary": "Update order status",
+                "description": "Updates the status of an existing order.",
+                "operationId": "updateOrderStatus",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true,
+                        "description": "Unique identifier of the order",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OrderStatusUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Order status updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrderResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["orders"],
+                "summary": "Delete order",
+                "description": "Deletes an existing order. Only orders in 'pending' status can be deleted.",
+                "operationId": "deleteOrder",
+                "parameters": [
+                    {
+                        "name": "orderId",
+                        "in": "path",
+                        "required": true,
+                        "description": "Unique identifier of the order to be deleted",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Order successfully deleted"
+                    },
+                    "400": {
+                        "description": "Order cannot be deleted due to its current status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Order not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "OrderRequest": {
+                "type": "object",
+                "required": [
+                    "items",
+                    "customerDetails"
+                ],
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderItem"
+                        },
+                        "minItems": 1
+                    },
+                    "customerDetails": {
+                        "$ref": "#/components/schemas/CustomerDetails"
+                    },
+                    "shippingAddress": {
+                        "$ref": "#/components/schemas/Address"
+                    },
+                    "billingAddress": {
+                        "$ref": "#/components/schemas/Address"
+                    },
+                    "paymentId": {
+                        "type": "string",
+                        "description": "Reference to a payment made through the Payment API",
+                        "example": "pay_123456789"
+                    }
+                }
+            },
+            "OrderItem": {
+                "type": "object",
+                "required": [
+                    "productId",
+                    "quantity"
+                ],
+                "properties": {
+                    "productId": {
+                        "type": "string",
+                        "example": "prod_789"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "example": 2
+                    },
+                    "unitPrice": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 29.99
+                    }
+                }
+            },
+            "CustomerDetails": {
+                "type": "object",
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "customer@example.com"
+                    },
+                    "firstName": {
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "example": "Doe"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+1-555-555-0123"
+                    }
+                }
+            },
+            "Address": {
+                "type": "object",
+                "required": [
+                    "street",
+                    "city",
+                    "country"
+                ],
+                "properties": {
+                    "street": {
+                        "type": "string",
+                        "example": "123 Main St"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "Boston"
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "MA"
+                    },
+                    "postalCode": {
+                        "type": "string",
+                        "example": "02108"
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "USA"
+                    }
+                }
+            },
+            "OrderResponse": {
+                "type": "object",
+                "properties": {
+                    "orderId": {
+                        "type": "string",
+                        "example": "ord_123456789"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "processing",
+                            "shipped",
+                            "delivered",
+                            "cancelled"
+                        ],
+                        "example": "processing"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderItem"
+                        }
+                    },
+                    "customerDetails": {
+                        "$ref": "#/components/schemas/CustomerDetails"
+                    },
+                    "shippingAddress": {
+                        "$ref": "#/components/schemas/Address"
+                    },
+                    "billingAddress": {
+                        "$ref": "#/components/schemas/Address"
+                    },
+                    "paymentId": {
+                        "type": "string",
+                        "example": "pay_123456789"
+                    },
+                    "totalAmount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 59.98
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "OrderStatusUpdate": {
+                "type": "object",
+                "required": [
+                    "status"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "processing",
+                            "shipped",
+                            "delivered",
+                            "cancelled"
+                        ],
+                        "example": "shipped"
+                    },
+                    "trackingNumber": {
+                        "type": "string",
+                        "example": "1Z999AA1234567890"
+                    }
+                }
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "example": "INVALID_REQUEST"
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Invalid order status provided"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -22,7 +22,7 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       # Deploy Bicep file
-    - name: deploy
+    - name: deploy in APIM
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -30,3 +30,10 @@ jobs:
         template: integration/order-processing/main.bicep
         parameters: integration/order-processing/params.json
         failOnStdErr: false
+
+    - name: register in API Center
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az apic api register -g integrate-2025 -n integrate-2025 -l integration/order-processing/order-api.openapi-v2.json
