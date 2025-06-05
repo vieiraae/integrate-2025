@@ -3,7 +3,7 @@
     "info": {
         "title": "Order Processing API",
         "version": "1.0.0",
-        "description": "A comprehensive API for managing orders, including order creation, status tracking, and inventory management. This API enables seamless order processing, real-time status updates, and order history management...",
+        "description": "A comprehensive API for managing orders, including order creation, status tracking, and inventory management. This API enables seamless order processing, real-time status updates, and order history management....",
         "contact": {
             "name": "Order API Support",
             "url": "https://api.contoso.com/order-support",
