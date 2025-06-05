@@ -32,7 +32,7 @@ jobs:
         failOnStdErr: false
 
     - name: register in API Center
-      uses: azure/cli@v2
+      uses: azure/cli@v2 
       with:
         azcliversion: latest
         inlineScript: |
