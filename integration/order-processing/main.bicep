@@ -2,7 +2,6 @@ param apiName string
 param apiDisplayName string
 param apiRevision string
 param apiPath string
-param apiSummary string
 param apiDescription string
 
 resource apim 'Microsoft.ApiManagement/service@2024-06-01-preview' existing = {
@@ -64,6 +63,7 @@ resource apimProductAPI 'Microsoft.ApiManagement/service/products/apiLinks@2024-
   }
 }
 
+/*
 resource apic 'Microsoft.ApiCenter/services@2024-06-01-preview' existing = {
   name: 'integrate-2025'
 }
@@ -159,3 +159,4 @@ resource apiDeployment 'Microsoft.ApiCenter/services/workspaces/apis/deployments
     }
   }
 }
+*/
